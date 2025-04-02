@@ -20,18 +20,13 @@ This project showcases my **data analysis skills and performances** using a real
 ## 📁 Repository Structure
 
 📂 1_SQL_queries:
-- [1)exploration.sql # Inspect column types and structure](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/01_exploration.sql) 
-- [2)data_cleaning.sql # Handle missing values and duplicates](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/01_exploration.sql)
-- [3)global_analysis.sql # Temperature trends and regression analysis](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/03_global_analysis.sql)
-- [4)outlier_analysis.sql # Z-score outlier detection and stddev comparison](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/04_outlier_analysis.sql)
-
-📂 1_SQL_queries:
 
 - [01_exploration.sql – Inspect column types and structure](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/01_exploration.sql)  
 - [02_data_cleaning.sql – Handle missing values and duplicates](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/02_data_cleaning.sql)  
 - [03_global_analysis.sql – Temperature trends and regression analysis](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/03_global_analysis.sql)  
 - [04_outlier_analysis.sql – Z-score outlier detection and stddev comparison](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/04_outlier_analysis.sql)
 
+2 
 ---
 
 ## 🛠️ Tools Used
