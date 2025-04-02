@@ -1,14 +1,13 @@
 
 
-												/*===========================================================
-												📄 02_data_cleaning.sql
-												🧹 DATA CLEANING & QUALITY CHECKS
+										/*===========================================================
+										🧹 DATA CLEANING & QUALITY CHECKS
 
-												This script includes:
-												- Missing value analysis (overall, per country/year, % above threshold)
-												- Comparison of missing data before and after 1950
-												- Identification of duplicate temperature records
-												===========================================================*/
+										This script includes:
+										- Missing value analysis (overall, per country/year, % above threshold)
+										- Comparison of missing data before and after 1950
+										- Identification of duplicate temperature records
+										===========================================================*/
 
 
 /*----------------------------------
