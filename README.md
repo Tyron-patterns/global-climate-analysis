@@ -26,7 +26,8 @@ This project showcases my **data analysis skills and performances** using a real
 - [03_global_analysis.sql – Temperature trends and regression analysis](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/03_global_analysis.sql)  
 - [04_outlier_analysis.sql – Z-score outlier detection and stddev comparison](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/04_outlier_analysis.sql)
 
-2 
+  2_Global_temperature_analysis
+  [pdf_file](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/Global%20temperature%20analysis%20(SQL).pdf)
 ---
 
 ## 🛠️ Tools Used
