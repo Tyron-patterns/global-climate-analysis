@@ -1,13 +1,13 @@
 
 
-												/*===========================================================
-													🔍 DATA STRUCTURE EXPLORATION & TYPE CORRECTION
+								/*===========================================================
+									🔍 DATA STRUCTURE EXPLORATION & TYPE CORRECTION
 
-												This script includes:
-												- Exploration of the dataset structure
-												- Inspection of column data types (PostgreSQL & MySQL)
-												- Correction of column data types for proper analysis
-												===========================================================*/*/
+								This script includes:
+								- Exploration of the dataset structure
+								- Inspection of column data types (PostgreSQL & MySQL)
+								- Correction of column data types for proper analysis
+								===========================================================*/*/
 
 /*--------------------------------------------------
 🔴1.A) EXPLORE THE DATA STRUCTURE (COLUMN TYPES).
