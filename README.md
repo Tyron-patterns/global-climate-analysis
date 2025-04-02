@@ -28,7 +28,7 @@ This project showcases my **data analysis skills and performances** using a real
 
 
 📖 2_Global_temperature_analysis
- - [pdf_file](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/Global%20temperature%20analysis%20(SQL).pdf)
+ - [Word_pdf_file](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/Global%20temperature%20analysis%20(SQL).pdf)
 
 📊 3_Trend_visualization 📈
  - [Power_BI _Charts(JPEG)](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/Global%20trend%20visualizations.pdf)
