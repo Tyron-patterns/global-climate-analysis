@@ -38,7 +38,7 @@
 
 
 
-	🔵1.C.3) checks for percentage of missing data above 6%
+	🔵1.C.3) checks for number of missing data above 6%
 
 	select count(*)  
 	from (select global_land_temp_country.country, 
