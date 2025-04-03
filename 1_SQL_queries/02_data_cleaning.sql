@@ -32,6 +32,11 @@
 	group by country, year
 	order by country
 
+	**Results:**
+	-- Lists amount of missing values per country/year
+	-- Result: Most countries have sparse missing data; gaps are more common pre-1950
+
+
 
 	🔵1.C.3) checks for percentage of missing data above 6%
 
