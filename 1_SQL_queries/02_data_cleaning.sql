@@ -95,7 +95,8 @@
 	-- indicating that most missing data are concentrated before 1950 
 	-- confirming the hypothesis that data collection became more consistent/reliable after the mid-20th century
 
-
+select (select count(averagetemp) from global_land_temp_country where extract(year from dt) > 1850) as after_1850,
+(select count(averagetemp)from global_land_temp_country where extract(year from dt) < 1850) as before_1950
 
 /*----------------------------------------------
 🔴1.D) IDENTIFY POTENTIAL DUPLICATE RECORDS.🔷
