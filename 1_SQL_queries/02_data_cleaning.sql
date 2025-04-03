@@ -22,14 +22,14 @@
 		count(averagetemp) as avg_notnull,
 		count(averagetempuncertainty) as averagetemp_uncert_notnull,
 		count(country) as country_notnull
-	from global_land_temp_country;
+	from global_t;
 
 	🔵1.C.2) --lists the amount of missing data per country
 		
 	select country,    
 		extract(year from dt) as year, 
 		count(*) as missing_values 
-	from global_land_temp_country
+	from global_t
 	where averagetemp is null or averagetempuncertainty is null 
 	group by country, year
 	order by country, year
@@ -49,10 +49,10 @@
         	COUNT(*) AS total_count,
         	nulls.null_count,
         	ROUND(nulls.null_count::NUMERIC / COUNT(*)::NUMERIC * 100, 2) AS missing_percentage
-    		FROM global_land_temp_country AS total
+    		FROM global_t AS total
    	LEFT JOIN (SELECT country, 
             		COUNT(*) AS null_count
-        	FROM global_land_temp_country
+        	FROM global_t
         	WHERE averagetemp IS NULL
         	GROUP BY country) AS nulls ON total.country = nulls.country
     	GROUP BY total.country, nulls.null_count
@@ -66,7 +66,7 @@
 
 	🔵1.C.4) checks for difference in percentage before and after 1950
 
-	select global_land_temp_country.country, 
+	select global_t.country, 
 		count(*) as notnull_count, 
 		null_count_before_1950, 
 		null_count_total,
@@ -74,20 +74,20 @@
 		round(null_count_total::numeric/count(*)::numeric, 5)*100 as total_percentage,
 		(round(null_count_total::numeric/count(*)::NUMERIC, 5)*100 - 
 		round(null_count_before_1950::numeric/count(*)::numeric,5)*100) as difference_percentages
-	from global_land_temp_country
-	join (select global_land_temp_country.country, 
+	from global_t
+	join (select global_t.country, 
 			count(*) as null_count_before_1950 
-			from global_land_temp_country 
+			from global_t 
 			where averagetemp is null and extract(year from dt) < 1950
-			group by global_land_temp_country.country) as null_temps_column_1950
-	on global_land_temp_country.country = null_temps_column_1950.country
-	left join (select global_land_temp_country.country, 
+			group by global_t.country) as null_temps_column_1950
+	on global_t.country = null_temps_column_1950.country
+	left join (select global_t.country, 
 				count(*) as null_count_total
-				from global_land_temp_country
+				from global_t
 				where averagetemp is null
-				group by global_land_temp_country.country) as null_temp_total_column
-	on global_land_temp_country.country = null_temp_total_column.country
-	group by global_land_temp_country.country, null_count_before_1950, null_count_total
+				group by global_t.country) as null_temp_total_column
+	on global_t.country = null_temp_total_column.country
+	group by global_t.country, null_count_before_1950, null_count_total
 	order by country;
 
 	**Results**:
@@ -95,8 +95,8 @@
 	-- indicating that most missing data are concentrated before 1950 
 	-- confirming the hypothesis that data collection became more consistent/reliable after the mid-20th century
 
-select (select count(averagetemp) from global_land_temp_country where extract(year from dt) > 1850) as after_1850,
-(select count(averagetemp)from global_land_temp_country where extract(year from dt) < 1850) as before_1950
+select (select count(averagetemp) from global_t where extract(year from dt) > 1850) as after_1850,
+(select count(averagetemp)from global_t where extract(year from dt) < 1850) as before_1950
 
 /*----------------------------------------------
 🔴1.D) IDENTIFY POTENTIAL DUPLICATE RECORDS.🔷
@@ -109,7 +109,7 @@ select country,
 		averagetemp, 
 		averagetempuncertainty, 	
 		count(*) 
-from global_land_temp_country
+from global_t
 where averagetemp is not null 
 group by country, dt,averagetemp, averagetempuncertainty 
 having count(*) > 1
