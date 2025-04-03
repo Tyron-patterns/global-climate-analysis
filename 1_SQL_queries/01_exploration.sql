@@ -39,3 +39,6 @@
 	ALTER TABLE global_land_temp_country 
 	ALTER averagetempuncertainty
 	TYPE float USING averagetempuncertainty::FLOAT;
+
+	🔵1.B.3)--renaming the table for conviniency
+	alter table global_land_temp_country rename to global_t
