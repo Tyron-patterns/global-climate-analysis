@@ -23,7 +23,7 @@
 			min(averagetempuncertainty) as min, 
 			max(averagetempuncertainty) as max, 
 			round(avg(averagetempuncertainty)::numeric,3) as avg, round(STDDEV(averagetempuncertainty)::numeric,3) as stddev
-	from global_land_temp_country;
+	from global_t;
 
 	
 	🔵2.A.2) retrieves average of important values on a country level
@@ -37,7 +37,7 @@
 		round(max(averagetemp)::numeric, 3) as max_temp, 
 		round(avg(averagetemp)::numeric, 3) as avg_temp, 
 		round(STDDEV(averagetemp)::numeric,3) as stddev_temp
-		from global_land_temp_country
+		from global_t
 		group by country 
 	order by country);
 
@@ -45,7 +45,7 @@
 	🔵2.A.i) checks the magnitud of uncertainties related to each measures
 
 	select count(*) 
-	from global_land_temp_country 
+	from global_t 
 	where averagetempuncertainty > abs(averagetemp);
 
 
@@ -58,7 +58,7 @@
 	🔵3.A.1) retrieves hottest years globally
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
-	from global_land_temp_country
+	from global_t
 	where averagetemp is not null 
 	group by year 
 	order by avg(averagetemp) desc
@@ -69,7 +69,7 @@
 
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
-	from global_land_temp_country 
+	from global_t 
 	where averagetemp is not null 
 	group by year 
 	order by avg(averagetemp)
@@ -88,7 +88,7 @@
 	from (select country, 
 				extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
-		from global_land_temp_country 
+		from global_t 
 		where averagetemp is not null 								
 		and country not in ('North America', 'South America', 'Africa', 'Europe', 'Australia', 'Asia')
 		group by year, country) 
@@ -115,7 +115,7 @@
 	from (select extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year,
 				country
-			from global_land_temp_country 
+			from global_t 
 			group by year, country) 
 	where year > '1900' -- remove to retrieve ranking for the entire time span
 	group by country
@@ -133,7 +133,7 @@
 	select round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
 	from (select extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
-	from global_land_temp_country 
+	from global_t 
 	group by year);
 
 
@@ -156,7 +156,7 @@
 🔴3.D) WHICH COUNTRIES HAVE THE MOST MISSING TEMPERATURE DATA?
 -------------------------------------------------------------*/
 
-select country, count(country) from global_land_temp_country 
+select country, count(country) from global_t 
 where averagetemp is null
 group by country 
 order by count(country) desc;
@@ -173,7 +173,7 @@ order by count(country) desc;
 	from (select country, 	
 				extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
-			from global_land_temp_country 
+			from global_t 
 			where country = 'Europe' and extract(year from dt) > '1975' 
 			group by country, year)
 	group by country
@@ -184,7 +184,7 @@ order by count(country) desc;
 	🔵3.E.2)asses which European countries are in the table
 
 	select distinct(country) 
-	from global_land_temp_country 
+	from global_t 
 	order by country; 
 
 	🔵3.E.3) retrieves highest temp increase overtime (in 5 countries)
@@ -194,7 +194,7 @@ order by count(country) desc;
 	from (select country, 
 				extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
-			from global_land_temp_country 
+			from global_t 
 			where country IN ('Albania', 'Belgium', 'Bulgaria', 'Croatia', 'Denmark') 
 			and extract(year from dt) >'1975' 
 			group by country, year) as uropean_countries
