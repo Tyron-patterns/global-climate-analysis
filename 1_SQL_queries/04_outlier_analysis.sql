@@ -22,9 +22,9 @@
 		       	(averagetemp - global_avg) / global_stddev as z_score
 		from (select country, 
 		averagetemp,
-		           (select avg(averagetemp) from global_land_temp_country) as global_avg,
-		           (select stddev(averagetemp) from global_land_temp_country) as global_stddev
-		   	from global_land_temp_country)
+		           (select avg(averagetemp) from global_t) as global_avg,
+		           (select stddev(averagetemp) from global_t) as global_stddev
+		   	from global_t)
 		where abs((averagetemp - global_avg) / global_stddev) > 3
 		order by z_score desc;
 
@@ -35,9 +35,9 @@
 		count(averagetemp)
 		from (select country, 
 		averagetemp,
-		           (select avg(averagetemp) from global_land_temp_country) as global_avg,
-		           (select stddev(averagetemp) from global_land_temp_country) as global_stddev
-		    	from global_land_temp_country)
+		           (select avg(averagetemp) from global_t) as global_avg,
+		           (select stddev(averagetemp) from global_t) as global_stddev
+		    	from global_t)
 		where (averagetemp - global_avg) / global_stddev not between -3 and 3
 		group by country 
 		order by country;
@@ -51,8 +51,8 @@
 		      	(SELECT country, 
 		(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
 		       	STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
-		FROM global_land_temp_country)
-		from global_land_temp_country;
+		FROM global_t)
+		from global_t;
 
 
 		🟡3.F.2.ii) counting the number of outliers for the consistency check for Cambodia
@@ -62,7 +62,7 @@
 		averagetemp, 
 		(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
 		       		STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
-		FROM global_land_temp_country
+		FROM global_t
 		       	WHERE averagetemp IS NOT NULL)
 		where z_score not between -3 and 3
 		group by country  
@@ -78,7 +78,7 @@
 		averagetemp, 
 		(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
 		       		STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
-		FROM global_land_temp_country
+		FROM global_t
 		       	WHERE averagetemp IS NOT NULL)
 		group by country 
 		having 'country' = 'Cambodia' 
@@ -93,7 +93,7 @@
 		               averagetemp, 
 		               (averagetemp - avg(averagetemp) OVER (PARTITION BY country)) / 
 		               stddev(averagetemp) OVER (PARTITION BY country) as z_score 
-		        from global_land_temp_country
+		        from global_t
 		        where averagetemp is not null) as temp_data
 		    where z_score not between -3 and 3 -- filtering outliers
 		    group by country)
@@ -113,11 +113,11 @@
 		from (select country, 
 		avg(averagetemp) as country_avg, 
 				stddev(averagetemp) as country_stddev
-			from global_land_temp_country 
+			from global_t 
 		where averagetemp is not null
 			group by country) as per_country
-		join global_land_temp_country 
-		on per_country.country = global_land_temp_country.country
+		join global_t 
+		on per_country.country = global_t.country
 		where (averagetemp - country_avg) / country_stddev not between -3 and 3
 		group by per_country.country, country_avg, country_stddev
 
@@ -132,11 +132,11 @@
 				from (select country, 
 							avg(averagetemp) as country_avg, 
 							stddev(averagetemp) as country_stddev
-						from global_land_temp_country 
+						from global_t 
 						where averagetemp is not null
 						group by country) as per_country
-		join global_land_temp_country 
-		on per_country.country = global_land_temp_country.country
+		join global_t 
+		on per_country.country = global_t.country
 		where (averagetemp - country_avg) / country_stddev not between -3 and 3
 		group by per_country.country, country_avg, country_stddev
 
@@ -151,11 +151,11 @@
 		from (select country, 
 					avg(averagetemp) as country_avg, 
 					stddev(averagetemp) as country_stddev
-				from global_land_temp_country 
+				from global_t 
 				where averagetemp is not null
 				group by country) as per_country
-		join global_land_temp_country 
-		on per_country.country = global_land_temp_country.country
+		join global_t 
+		on per_country.country = global_t.country
 		where (averagetemp - country_avg) / country_stddev not between -3 and 3
 		group by per_country.country, country_avg, country_stddev)
 
@@ -180,12 +180,12 @@ select a.year,
 		b.unfiltered_std
 from (select extract(year from dt) as year,
 			round(stddev(averagetemp)::numeric,3)	as filtered_std 
-			from global_land_temp_country
+			from global_t
 			where averagetemp > -12.98
 			group by year) as a
 full outer join (select extract(year from dt) as year,
 			round(stddev(averagetemp)::numeric,3) as unfiltered_std
-			from global_land_temp_country
+			from global_t
 			group by year) as b
 on a.year=b.year
 group by a.year, a.filtered_std, b.unfiltered_std
