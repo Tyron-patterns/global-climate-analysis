@@ -1,14 +1,14 @@
 
-									/*===========================================================									
-									🌡️ GLOBAL TEMPERATURE ANALYSIS
+							/*===========================================================									
+							🌡️ GLOBAL TEMPERATURE ANALYSIS
 
-									This script includes:
-									- Summary statistics (min, max, avg, stddev globally and per country)
-									- Hottest and coldest years
-									- Regression slope of temperature increase per country and continent
-									- Europe-specific trends and fast-warming countries
-									- Countries with the most missing temperature data
-									===========================================================*/
+							This script includes:
+							- Summary statistics (min, max, avg, stddev globally and per country)
+							- Hottest and coldest years
+							- Regression slope of temperature increase per country and continent
+							- Europe-specific trends and fast-warming countries
+							- Countries with the most missing temperature data
+							===========================================================*/
 
 /*---------------------------------
 🔴2.A) CHECK FOR MEANINGFUL VALUES
