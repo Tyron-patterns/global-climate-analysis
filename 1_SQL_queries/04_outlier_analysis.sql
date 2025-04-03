@@ -1,14 +1,14 @@
 				
-											/*===========================================================
-											⚠️ OUTLIER DETECTION & VARIABILITY COMPARISON
-
-											This script includes:
-											- Z-score outlier detection at the global and country levels
-											- Outlier counts for specific countries
-											- Country ranking by number of temperature outliers
-											- Comparison of standard deviation with and without outliers
-											===========================================================*/
-													
+							/*===========================================================
+							⚠️ OUTLIER DETECTION & VARIABILITY COMPARISON
+	
+							This script includes:
+							- Z-score outlier detection at the global and country levels
+							- Outlier counts for specific countries
+							- Country ranking by number of temperature outliers
+							- Comparison of standard deviation with and without outliers
+							===========================================================*/
+									
 
 /*---------------------------------------------------
 🔴3.F) CAN YOU IDENTIFY ANY OUTLIERS IN THE DATASET?
