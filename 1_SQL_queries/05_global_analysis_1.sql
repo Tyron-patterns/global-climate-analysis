@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------
-🔴3.B) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
+🔴5.B) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
 
-	🔵3.B.1) Version A: Regression for all years
+	🔵%.B.1) Version A: Regression for all years
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -29,7 +29,7 @@
 	limit 1;
 
 
-	🔵3.B.2)Version B: Regression post-1900 (used in main analysis)
+	🔵5.B.2)Version B: Regression post-1900 (used in main analysis)
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
