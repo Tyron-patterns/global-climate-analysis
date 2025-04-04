@@ -29,7 +29,7 @@
 🔴1.B) CORRECT DATATYPES
 --------------------------*/
 
-	🔵1.B.1)
+	🔵1.B.1) --correcting data types that where stored as text
 	ALTER TABLE global_land_temp_country
 	ALTER averagetemp 
 	TYPE float USING averagetempuncertainty::FLOAT;
