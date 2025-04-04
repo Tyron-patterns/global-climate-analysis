@@ -1,4 +1,4 @@
-ti				
+				
 							/*===========================================================
 							⚠️ OUTLIER DETECTION & VARIABILITY COMPARISON
 	
@@ -11,25 +11,26 @@ ti
 									
 
 /*---------------------------------------------------
-🔴3.F) CAN YOU IDENTIFY ANY OUTLIERS IN THE DATASET?
+🔴3) IDENTIFICATION OF OUTLIERS
 --------------------------------------------------*/
 
-	🔵3.F.1)Z-score Global level
+	🔵3.A.1)Z-score Global level
 
-		🟡3.F.1.i) checks if there are countries with temps outside 3xstddev (or |Z|>3)
+		🟡3.A.1.i) --checks if there are countries with temps outside 3xstddev (or |Z|>3)
 		select country, 
-		averagetemp, 
-		       	(averagetemp - global_avg) / global_stddev as z_score
+			averagetemp, 
+			       	(averagetemp - global_avg) / global_stddev as z_score
 		from (select country, 
-		averagetemp,
-		           (select avg(averagetemp) from global_t) as global_avg,
-		           (select stddev(averagetemp) from global_t) as global_stddev
-		   	from global_t)
+				averagetemp,
+			        (select avg(averagetemp) from global_t) as global_avg,
+			        (select stddev(averagetemp) from global_t) as global_stddev
+			from global_t)
 		where abs((averagetemp - global_avg) / global_stddev) > 3
 		order by z_score desc;
 
 
-		🟡3.F.1.ii) counting the number of outliers
+
+		🟡3.A.1.ii) --counting the number of outliers
 
 		select country, 
 		count(averagetemp)
@@ -43,20 +44,19 @@ ti
 		order by country;
 
 
-	🔵3.F.2)Z-score Country Level
+	🔵3.B.2)Z-score Country Level
 
-		🟡3.F.2.i) -- checks if outliers are present through WINDOW function
-		select country, 
-		averagetemp, 
-		      	(SELECT country, 
-		(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
-		       	STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
-		FROM global_t)
-		from global_t;
+		🟡3.B.2.i) -- checks if outliers are present through WINDOW function
+		select country, -- checks if outliers are present through WINDOW function
+			averagetemp,
+			(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
+       			STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
+		from global_1850;
 
 
-		🟡3.F.2.ii) counting the number of outliers for the consistency check for Cambodia
-		select country, -- counting the number of outliers for the consistency check for Cambodia
+
+		🟡3.B.2.ii) --counting the number of outliers for the consistency check for Cambodia
+		select country,
 		count(*) as temp_outliers 	
 		from (SELECT country, 
 		averagetemp, 
@@ -69,99 +69,103 @@ ti
 		having country = 'Cambodia' 
 
 
-		🟡3.F.3.iii) counting the number of total records for Cambodia
+		🟡3.B.3.iii) --counting the number of total records for Cambodia
 
 		select country, 
 		count(*), 
 		z_score as total_temps 
 		from (SELECT country, 
-		averagetemp, 
-		(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
+			averagetemp, 
+			(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
 		       		STDDEV(averagetemp) OVER (PARTITION BY country) AS z_score 
-		FROM global_t
+			FROM global_t
 		       	WHERE averagetemp IS NOT NULL)
 		group by country 
 		having 'country' = 'Cambodia' 
 
 
-		🟡3.F.3.iv) checks if outliers are present through WITH function
+		🟡3.B.3.iv) --checks if outliers are present through WITH function
 
 		WITH temp_outlier_counts AS (
-		    select country, 
-		           count(*) as temp_outliers
-		    from (select country, 
-		               averagetemp, 
-		               (averagetemp - avg(averagetemp) OVER (PARTITION BY country)) / 
-		               stddev(averagetemp) OVER (PARTITION BY country) as z_score 
-		        from global_t
-		        where averagetemp is not null) as temp_data
-		    where z_score not between -3 and 3 -- filtering outliers
-		    group by country)
+    		select country, 
+           		count(*) as temp_outliers
+    		from (select country, 
+               			averagetemp, 
+               			(averagetemp - avg(averagetemp) OVER (PARTITION BY country)) / 
+               			stddev(averagetemp) OVER (PARTITION BY country) as z_score 
+        	     from global_1850
+        	     where averagetemp is not null) as temp_data
+    		where z_score not between -3 and 3 -- filtering outliers
+    		group by country)
 		SELECT * FROM temp_outlier_counts
 		where temp_outliers = (select max(temp_outliers) from temp_outlier_counts) 
-		   or temp_outliers = (select min(temp_outliers) from temp_outlier_counts);
+   		or temp_outliers = (select min(temp_outliers) from temp_outlier_counts);
 
 
-	🔵3.F.3) Z-score Country Level, different approach
 
-		🟡3.F.3.i) counting the number of outliers
+	🔵3.C.3) --Z-score Country Level, different approach
 
-		select per_country.country, 
-		country_avg, 
-		country_stddev, 
-		count(averagetemp) as temp_outliers
+		🟡3.C.3.i) counting the number of outliers
+
+		select per_country.country, -- counting the number of outliers
+			country_avg, 
+			country_stddev, 
+			count(averagetemp) as temp_outliers
 		from (select country, 
-		avg(averagetemp) as country_avg, 
+				avg(averagetemp) as country_avg, 
 				stddev(averagetemp) as country_stddev
-			from global_t 
-		where averagetemp is not null
+			from global_1850
+			where averagetemp is not null
 			group by country) as per_country
-		join global_t 
-		on per_country.country = global_t.country
+		join global_1850
+		on per_country.country = global_1850.country
 		where (averagetemp - country_avg) / country_stddev not between -3 and 3
 		group by per_country.country, country_avg, country_stddev
 
 
-		🟡3.F.3.ii) average of total records for countries presenting outliers
 
-		select round(avg(temp_outliers)::numeric, 3) 
+		🟡3.C.3.ii) average of total records for countries presenting outliers
+
+		select round(avg(temp_outliers)::numeric, 3) -- average of total records for countries presenting outliers
 		from (select per_country.country, 
-					country_avg, 
-					country_stddev, 
-					ount(averagetemp) as temp_outliers
-				from (select country, 
-							avg(averagetemp) as country_avg, 
-							stddev(averagetemp) as country_stddev
-						from global_t 
-						where averagetemp is not null
-						group by country) as per_country
-		join global_t 
-		on per_country.country = global_t.country
-		where (averagetemp - country_avg) / country_stddev not between -3 and 3
-		group by per_country.country, country_avg, country_stddev
-
-
-		🟡3.F.3.iii) using WITH to retrieve the average of total records for countries presenting outliers
-
-		WITH temp_outlier_counts AS
-		(select round(avg(temp_outliers),3),  
 				country_avg, 
 				country_stddev, 
 				count(averagetemp) as temp_outliers
-		from (select country, 
-					avg(averagetemp) as country_avg, 
-					stddev(averagetemp) as country_stddev
+			from (select country, 
+				avg(averagetemp) as country_avg, 
+				stddev(averagetemp) as country_stddev
 				from global_t 
 				where averagetemp is not null
 				group by country) as per_country
-		join global_t 
-		on per_country.country = global_t.country
+		join global_1850
+		on per_country.country = global_1850.country
 		where (averagetemp - country_avg) / country_stddev not between -3 and 3
 		group by per_country.country, country_avg, country_stddev)
 
-		SELECT * FROM temp_outlier_counts
-		where temp_outliers = (select max(temp_outliers) from temp_outlier_counts)
-		or temp_outliers = (select min(temp_outliers) from temp_outlier_counts)
+
+
+		🟡3.C.3.iii) --using WITH to retrieve the average of total records for countries presenting outliers
+
+		WITH temp_outlier_counts AS (
+ 		SELECT per_country.country,               
+   			country_avg, 
+    			country_stddev, 
+    			COUNT(global_1850.averagetemp) AS temp_outliers
+  		FROM ( SELECT country, 
+      				AVG(averagetemp) AS country_avg, 
+      				STDDEV(averagetemp) AS country_stddev
+    			FROM global_1850
+    			WHERE averagetemp IS NOT NULL
+   			GROUP BY country) AS per_country
+    		JOIN global_1850
+    		ON per_country.country = global_1850.country
+    		WHERE (averagetemp - country_avg) / country_stddev NOT BETWEEN -3 AND 3
+   		GROUP BY per_country.country, country_avg, country_stddev )
+		SELECT * 
+		FROM temp_outlier_counts
+		WHERE temp_outliers = (SELECT MAX(temp_outliers) FROM temp_outlier_counts)
+   		OR temp_outliers = (SELECT MIN(temp_outliers) FROM temp_outlier_counts);
+
 
 
 
