@@ -40,7 +40,7 @@ order by count(country) desc;
 🔴5.E) WHAT IS THE AVERAGE TEMPERATURE TREND IN EUROPE (NO CONTINENT COLUMNS WAS PROVIDED IN THE TABLE AND EUROPE WAS LISTED AS A COUNTRY) AND 5 COUNTRIES IN EUROPE OVER THE LAST 50 YEARS?
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
 	
-	🔵5.E.1) retrieves for regression slope of countries per year
+	🔵5.E.1)-- retrieves for regression slope of countries per year
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -55,13 +55,13 @@ order by count(country) desc;
 	order by temp_increase desc;
 
 
-	🔵5.E.2)asses which European countries are in the table
+	🔵5.E.2)--asses which European countries are in the table
 
 	select distinct(country) 
 	from global_t 
 	order by country; 
 
-	🔵5.E.3) retrieves highest temp increase overtime (in 5 countries)
+	🔵5.E.3) --retrieves highest temp increase overtime (in 5 countries)
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -75,3 +75,40 @@ order by count(country) desc;
 	group by country
 	having regr_slope(avg_temp_per_year, year) is not null
 	order by temp_increase desc;
+/*---------------------------------------------------------------------------------------------------------------------------------------------
+🔴5.F)--What is the average temperature trend in Europe (no continent columns was provided in the table and Europe was listed as a country) 
+and 5 countries in Europe over the last 50 years?
+---------------------------------------------------------------------------------------------------------------------------------------------*/	
+
+	🔵5.F.1) 
+
+		select country, 
+			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
+		from (select country, 	
+				extract(year from dt) as year, 
+				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
+			from global_t 
+			where country = 'Europe' and extract(year from dt) > '1975' 
+			group by country, year)
+		group by country
+		having regr_slope(avg_temp_per_year, year) is not null
+		order by temp_increase desc;
+
+		###
+		select distinct(country) --I first needed to asses which European countries are in the table
+		from global_t 
+		order by country; 
+
+	 🔵5.F.2)--highest temp increase overtime (in 5 countries)
+		select country, --highest temp increase overtime (in 5 countries)
+			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
+		from (select country, 
+				extract(year from dt) as year, 
+				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
+			from global_t 
+			where country IN ('Albania', 'Belgium', 'Bulgaria', 'Croatia', 'Denmark') 
+			and extract(year from dt) >'1975' 
+			group by country, year) as uropean_countries
+		group by country
+		having regr_slope(avg_temp_per_year, year) is not null
+		order by temp_increase desc;
