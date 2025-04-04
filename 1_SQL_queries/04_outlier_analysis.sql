@@ -11,10 +11,10 @@
 									
 
 /*---------------------------------------------------
-🔴3) IDENTIFICATION OF OUTLIERS
+🔴4) IDENTIFICATION OF OUTLIERS
 --------------------------------------------------*/
 
-	🔵3.A.1)Z-score Global level
+	🔵4.A.1)Z-score Global level
 
 		🟡3.A.1.i) --checks if there are countries with temps outside 3xstddev (or |Z|>3)
 		select country, 
@@ -30,7 +30,7 @@
 
 
 
-		🟡3.A.1.ii) --counting the number of outliers
+		🟡4.A.1.ii) --counting the number of outliers
 
 		select country, 
 		count(averagetemp)
@@ -44,9 +44,9 @@
 		order by country;
 
 
-	🔵3.B.2)Z-score Country Level
+	🔵4.B.2)Z-score Country Level
 
-		🟡3.B.2.i) -- checks if outliers are present through WINDOW function
+		🟡4.B.2.i) -- checks if outliers are present through WINDOW function
 		select country, -- checks if outliers are present through WINDOW function
 			averagetemp,
 			(averagetemp - AVG(averagetemp) OVER (PARTITION BY country)) / 
@@ -55,7 +55,7 @@
 
 
 
-		🟡3.B.2.ii) --counting the number of outliers for the consistency check for Cambodia
+		🟡4.B.2.ii) --counting the number of outliers for the consistency check for Cambodia
 		select country,
 		count(*) as temp_outliers 	
 		from (SELECT country, 
@@ -69,7 +69,7 @@
 		having country = 'Cambodia' 
 
 
-		🟡3.B.3.iii) --counting the number of total records for Cambodia
+		🟡4.B.3.iii) --counting the number of total records for Cambodia
 
 		select country, 
 		count(*), 
@@ -84,7 +84,7 @@
 		having 'country' = 'Cambodia' 
 
 
-		🟡3.B.3.iv) --checks if outliers are present through WITH function
+		🟡4.B.3.iv) --checks if outliers are present through WITH function
 
 		WITH temp_outlier_counts AS (
     		select country, 
@@ -103,9 +103,9 @@
 
 
 
-	🔵3.C.3) --Z-score Country Level, different approach
+	🔵4.C.3) --Z-score Country Level, different approach
 
-		🟡3.C.3.i) counting the number of outliers
+		🟡4.C.3.i) counting the number of outliers
 
 		select per_country.country, -- counting the number of outliers
 			country_avg, 
@@ -124,7 +124,7 @@
 
 
 
-		🟡3.C.3.ii) average of total records for countries presenting outliers
+		🟡4.C.3.ii) average of total records for countries presenting outliers
 
 		select round(avg(temp_outliers)::numeric, 3) -- average of total records for countries presenting outliers
 		from (select per_country.country, 
@@ -144,7 +144,7 @@
 
 
 
-		🟡3.C.3.iii) --using WITH to retrieve the average of total records for countries presenting outliers
+		🟡4.C.3.iii) --using WITH to retrieve the average of total records for countries presenting outliers
 
 		WITH temp_outlier_counts AS (
  		SELECT per_country.country,               
