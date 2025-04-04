@@ -11,10 +11,10 @@
 -- NOTE: A proper explanation of the approach and the results of this analysis is presented in the main paper
 
 /*----------------------------------
-🔴1.C) CHECK FOR MISSING VALUES (NULLs).
+🔴2.A) CHECK FOR MISSING VALUES (NULLs).
 ----------------------------------*/
 
-	🔵1.C.1) --checks for presence of missing data 
+	🔵2.A.1) --checks for presence of missing data 
 
 	select count(*) as total, 
 		count(dt) as dt_notnull,
@@ -23,7 +23,7 @@
 		count(country) as country_notnull
 	from global_t;
 
-	🔵1.C.2) --lists the amount of missing data per country
+	🔵2.A.2) --lists the amount of missing data per country
 		
 	select country,    
 		extract(year from dt) as year, 
@@ -41,7 +41,7 @@
 	-- Let's invesigate this further!
 
 
-	🔵1.C.3) --checks for number of country with more than 5% (reasonable threshold) of missing records 
+	🔵2.A.3) --checks for number of country with more than 5% (reasonable threshold) of missing records 
 
 	SELECT COUNT(*) AS countries_with_high_missing
 	FROM (SELECT total.country,
@@ -62,7 +62,7 @@
 	-- The next query investigates the concentration of missing data in early years: the data collection starts in 1943
 	-- and measuring methods where more unrelaible at that time
 
-	🔵1.C.4)--some hard coding to retrieve in one row all the percentages for every 25 years time frame
+	🔵2.A.4)--some hard coding to retrieve in one row all the percentages for every 25 years time frame
 	select (select count(*) as total from global_t
 	where averagetemp is not null) as total,
 	(select round((count(*)::numeric/t.total)*100,3) from global_t
@@ -101,7 +101,7 @@
 	from (select count(*) as total from global_t
 			where averagetemp is not null ) as t
 
- 	🔵1.C.3)--some more hard coding to find the number od records per country for every 25-years time frame
+ 	🔵2.C.3)--some more hard coding to find the number od records per country for every 25-years time frame
 	SELECT 
 	  country,
 	  COUNT(CASE WHEN EXTRACT(YEAR FROM dt) BETWEEN 1743 AND 1775 THEN 1 END) AS count_1743_1775,
@@ -121,7 +121,7 @@
 	ORDER BY country;
 
  
-	🔵1.C.4) checks for difference in percentage before and after 1950
+	🔵2.C.4) checks for difference in percentage before and after 1950
 
 	select global_t.country, 
 		count(*) as notnull_count, 
@@ -156,7 +156,7 @@
 	(select count(averagetemp)from global_t where extract(year from dt) < 1850) as before_1850
 
 /*----------------------------------------------
-🔴1.D) IDENTIFY POTENTIAL DUPLICATE RECORDS.🔷
+🔴2.B) IDENTIFY POTENTIAL DUPLICATE RECORDS.🔷
 ----------------------------------------------*/
 
 --checks for repeated values (identical temperatures for the same country on the same date)
