@@ -35,13 +35,13 @@
 
 	**Results:**
 	-- Lists amount of missing values per country/year
-	-- Most countries have sparse missing data; at a first glance it seems like gaps are more common pre-1950
+	-- Most countries have sparse missing data; at a first glance it seems like gaps are more common pre-1850
 	-- with some countries that don't even have records in early years
 		
 	-- Let's invesigate this further!
 
 
-	🔵2.A.3) --checks for number of country with more than 5% (reasonable threshold) of missing records 
+	🔵2.A.3) --checks for number of country with more than 5% (reasonable threshold) of missing values (nulls) 
 
 	SELECT COUNT(*) AS countries_with_high_missing
 	FROM (SELECT total.country,
@@ -62,7 +62,38 @@
 	-- The next query investigates the concentration of missing data in early years: the data collection starts in 1943
 	-- and measuring methods where more unrelaible at that time
 
-	🔵2.A.4)--some hard coding to retrieve in one row all the percentages for every 25 years time frame
+	🔵2.A.4) --checks for difference in percentage before and after 1850 for missing values (nulls)
+
+	select global_t.country, 
+		count(*) as notnull_count, 
+		null_count_before_1850, 
+		null_count_total,
+		round(null_count_before_1950::numeric/count(*)::numeric,5)*100 as percentage_before_1950,
+		round(null_count_total::numeric/count(*)::numeric, 5)*100 as total_percentage,
+		(round(null_count_total::numeric/count(*)::NUMERIC, 5)*100 - 
+		round(null_count_before_1950::numeric/count(*)::numeric,5)*100) as difference_percentages
+	from global_t
+	join (select global_t.country, 
+			count(*) as null_count_before_1850 
+			from global_t 
+			where averagetemp is null and extract(year from dt) < 1850
+			group by global_t.country) as null_temps_column_1850
+	on global_t.country = null_temps_column_1850.country
+	left join (select global_t.country, 
+				count(*) as null_count_total
+				from global_t
+				where averagetemp is null
+				group by global_t.country) as null_temp_total_column
+	on global_t.country = null_temp_total_column.country
+	group by global_t.country, null_count_before_1850, null_count_total
+	order by country;
+
+	**Results**:
+	-- the difference in percentage between before_1950 and total null values is extremely small, 
+	-- indicating that most missing data are concentrated before 1950 
+	-- confirming the hypothesis that data collection became more consistent/reliable after the mid-20th century
+
+	🔵2.A.5)--some hard coding to retrieve in one row all the percentages for every 25 years time frame
 	select (select count(*) as total from global_t
 	where averagetemp is not null) as total,
 	(select round((count(*)::numeric/t.total)*100,3) from global_t
@@ -101,7 +132,7 @@
 	from (select count(*) as total from global_t
 			where averagetemp is not null ) as t
 
- 	🔵2.C.3)--some more hard coding to find the number od records per country for every 25-years time frame
+ 	🔵2.A.6)--some more hard coding to find the number of records per country for every 25-years time frame
 	SELECT 
 	  country,
 	  COUNT(CASE WHEN EXTRACT(YEAR FROM dt) BETWEEN 1743 AND 1775 THEN 1 END) AS count_1743_1775,
@@ -120,37 +151,7 @@
 	GROUP BY country
 	ORDER BY country;
 
- 
-	🔵2.C.4) checks for difference in percentage before and after 1950
 
-	select global_t.country, 
-		count(*) as notnull_count, 
-		null_count_before_1950, 
-		null_count_total,
-		round(null_count_before_1950::numeric/count(*)::numeric,5)*100 as percentage_before_1950,
-		round(null_count_total::numeric/count(*)::numeric, 5)*100 as total_percentage,
-		(round(null_count_total::numeric/count(*)::NUMERIC, 5)*100 - 
-		round(null_count_before_1950::numeric/count(*)::numeric,5)*100) as difference_percentages
-	from global_t
-	join (select global_t.country, 
-			count(*) as null_count_before_1950 
-			from global_t 
-			where averagetemp is null and extract(year from dt) < 1950
-			group by global_t.country) as null_temps_column_1950
-	on global_t.country = null_temps_column_1950.country
-	left join (select global_t.country, 
-				count(*) as null_count_total
-				from global_t
-				where averagetemp is null
-				group by global_t.country) as null_temp_total_column
-	on global_t.country = null_temp_total_column.country
-	group by global_t.country, null_count_before_1950, null_count_total
-	order by country;
-
-	**Results**:
-	-- the difference in percentage between before_1950 and total null values is extremely small, 
-	-- indicating that most missing data are concentrated before 1950 
-	-- confirming the hypothesis that data collection became more consistent/reliable after the mid-20th century
 	
 	select (select count(averagetemp) from global_t where extract(year from dt) > 1850) as after_1850,
 	(select count(averagetemp)from global_t where extract(year from dt) < 1850) as before_1850
