@@ -3,8 +3,8 @@
 							🧹 DATA CLEANING & QUALITY CHECKS
 
 							This script includes:
-							- Missing value analysis (overall, per country/year, % above threshold)
-							- Comparison of missing data before and after 1950
+							- Missing value/records analysis (overall, per country/year, % above threshold)
+							- Comparison of missing data before and after 1850
 							- Identification of duplicate temperature records
 							===========================================================*/
 
