@@ -69,7 +69,7 @@
 		having country = 'Cambodia' 
 
 
-		🟡4.B.3.iii) --counting the number of total records for Cambodia
+		🟡4.B.3.iii) --counting the number of total records for Cambodia for consistency check
 
 		select country, 
 		count(*), 
@@ -97,10 +97,11 @@
         	     where averagetemp is not null) as temp_data
     		where z_score not between -3 and 3 -- filtering outliers
     		group by country)
-		SELECT * FROM temp_outlier_counts
+		SELECT * FROM temp_outlier_counts;
+			
 		where temp_outliers = (select max(temp_outliers) from temp_outlier_counts) 
    		or temp_outliers = (select min(temp_outliers) from temp_outlier_counts);
-
+		--add to retrieve countries per max and min count of outliers
 
 
 	🔵4.C.3) --Z-score Country Level, different approach
@@ -162,16 +163,17 @@
     		WHERE (averagetemp - country_avg) / country_stddev NOT BETWEEN -3 AND 3
    		GROUP BY per_country.country, country_avg, country_stddev )
 		SELECT * 
-		FROM temp_outlier_counts
+		FROM temp_outlier_counts;
+		
 		WHERE temp_outliers = (SELECT MAX(temp_outliers) FROM temp_outlier_counts)
    		OR temp_outliers = (SELECT MIN(temp_outliers) FROM temp_outlier_counts);
-
+		--add to retrieve countries per max and min count of outliers
 
 
 
 
 /*-----------------------------------------------------------------------------------------
-🔴3.G) COMPARING STANDARD DEVIATION FOR GLOBAL DATASET WITH OUTLIERS AND WITHOUT OUTLIERS
+🔴4.G) COMPARING STANDARD DEVIATION FOR GLOBAL DATASET WITH OUTLIERS AND WITHOUT OUTLIERS
 ------------------------------------------------------------------------------------------*/
 
 select a.year, 
