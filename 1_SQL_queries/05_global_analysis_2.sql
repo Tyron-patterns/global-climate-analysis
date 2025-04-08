@@ -7,7 +7,7 @@
 	select round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
 	from (select extract(year from dt) as year, 
 				round(avg(averagetemp)::numeric,2) as avg_temp_per_year
-	from global_t 
+	from global_IQR 
 	group by year);
 
 	🔵5.E.2) --Calculates global temperature regression slopes from 1743, 1850, 1900, and 1950 to 2013 to compare long-term warming trend
@@ -16,7 +16,7 @@
 	from (
 	    select extract(year from dt) as year, 
 	           avg(averagetemp) as avg_temp
-	    from global_t
+	    from global_IQR
 	    where extract(year from dt)  >= 1743
 		and averagetemp is not null
 	    group by year)
@@ -25,7 +25,7 @@
 	from (
 	    select extract(year from dt) as year, 
 	           avg(averagetemp) as avg_temp
-	    from global_t
+	    from global_IQR
 	    where extract(year from dt) >= 1850 
 		and averagetemp is not null
 	    group by year)
@@ -34,7 +34,7 @@
 	from (
 	    select extract(year from dt) as year, 
 	           avg(averagetemp) as avg_temp
-	    from global_t
+	    from global_IQR
 	    where extract(year from dt) >= 1900 
 		and averagetemp is not null
 	    group by year)
@@ -43,7 +43,7 @@
 	from (
 	    select extract(year from dt) as year, 
 	           avg(averagetemp) as avg_temp
-	    from global_t
+	    from global_IQR
 	    where extract(year from dt) >= 1950 
 		and averagetemp is not null
 	    group by year)
