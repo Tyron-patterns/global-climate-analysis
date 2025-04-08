@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------
-🔴5.D) ANALYZE THE GLOBAL TEMPERATURE TREND OVER TIME. IF THE DATASET INCLUDED CONTINENTS, THE SAME METHOD COULD BE USED FOR CONTINENT-BASED TRENDS
+🔴5.E) ANALYZE THE GLOBAL TEMPERATURE TREND OVER TIME. IF THE DATASET INCLUDED CONTINENTS, THE SAME METHOD COULD BE USED FOR CONTINENT-BASED TRENDS
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
 
-	🔵5.D.1) --retrieves the regression slope per country per year 
+	🔵5.E.1) --retrieves the regression slope per country per year 
 
 	select round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
 	from (select extract(year from dt) as year, 
@@ -10,7 +10,7 @@
 	from global_t 
 	group by year);
 
-	🔵5.D.2) --Calculates global temperature regression slopes from 1743, 1850, 1900, and 1950 to 2013 to compare long-term warming trend
+	🔵5.E.2) --Calculates global temperature regression slopes from 1743, 1850, 1900, and 1950 to 2013 to compare long-term warming trend
 	with year_1743 as (
 	select round(regr_slope(avg_temp, year)::numeric, 5) as slope_per_year
 	from (
@@ -55,7 +55,7 @@
 	cross join year_1950
 
 
-	🔵5.D.3) --retrieves the regression slope per continent per year
+	🔵5.E.3) --retrieves the regression slope per continent per year
 
 	select continent, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -73,7 +73,7 @@
 /*-------------------------------------------------------------
 🔴5.F) WHICH COUNTRIES HAVE THE MOST MISSING TEMPERATURE DATA?
 -------------------------------------------------------------*/
-	🔵5.E.1) --counting missing values (‘null’)
+	🔵F.1) --counting missing values (‘null’)
 	select country, count(country) from global_t 
 	where averagetemp is null
 	group by country 
