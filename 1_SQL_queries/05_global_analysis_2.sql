@@ -73,13 +73,13 @@
 /*-------------------------------------------------------------
 🔴5.F) WHICH COUNTRIES HAVE THE MOST MISSING TEMPERATURE DATA?
 -------------------------------------------------------------*/
-	🔵F.1) --counting missing values (‘null’)
+	🔵5.F.1) --counting missing values (‘null’)
 	select country, count(country) from global_t 
 	where averagetemp is null
 	group by country 
 	order by count(country) desc;
 
-	🔵F.2) --counting missing record (including nulls) taking as comparison Germany who showed the highest numbers of records. 
+	🔵5.F.2) --counting missing record (including nulls) taking as comparison Germany who showed the highest numbers of records. 
 		--Choosing the average of number of records per country would have given the same list 
 		--in terms ouf countries but different count for the missing records.
 		
