@@ -1,3 +1,19 @@
+
+							/*------------------------------------------------------------
+							📊 POWER BI INTEGRATION NOTE
+							
+							Most of the queries in this script were also used to generate 
+							the tables and columns imported into Power BI to create the 
+							corresponding visualizations. Each query served a dual purpose: 
+							performing the analysis in SQL and supplying clean, 
+							ready-to-visualize datasets for the Power BI dashboard.
+							
+							Below is an example of a longer query used to generate a specific 
+							set of columns for one of the Power BI dashboards.
+							------------------------------------------------------------*/
+
+-- Example: Yearly temperature range and average per continent (post-1900)
+
 with after_1975 as(
 select country, --highest temp increase overtime (in 5 countries)
 		round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase_1975
