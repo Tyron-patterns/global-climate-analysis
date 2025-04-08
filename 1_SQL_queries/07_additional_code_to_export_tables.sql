@@ -61,8 +61,8 @@ select
  t1975.temp_increase_1975,
   t1850.temp_increase_1850,
   tZ1850.temp_increase_Z_1850
-FROM total
-JOIN after_1975 as t1975 ON total.country = t1975.country
-JOIN after_1850 as t1850 ON total.country = t1850.country
-JOIN after_Z_1850 as tZ1850 ON total.country = tZ1850.country
-ORDER BY total.country asc;
+from total
+join after_1975 as t1975 on total.country = t1975.country
+join after_1850 as t1850 on total.country = t1850.country
+join after_Z_1850 as tZ1850 on total.country = tZ1850.country
+order by total.country asc;
