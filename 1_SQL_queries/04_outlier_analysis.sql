@@ -42,7 +42,7 @@
 		where (averagetemp - global_avg) / global_stddev not between -3 and 3
 		group by country 
 		order by country;
-
+	-- P.S. CTE would have been slightly more efficient
 
 	🔵4.B.2)Z-score Country Level
 
@@ -81,7 +81,7 @@
 			FROM global_t
 		       	WHERE averagetemp IS NOT NULL)
 		group by country 
-		having 'country' = 'Cambodia' 
+		having country = 'Cambodia' 
 
 
 		🟡4.B.3.iv) --checks if outliers are present through WITH function
