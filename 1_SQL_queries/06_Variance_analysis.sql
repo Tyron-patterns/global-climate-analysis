@@ -63,7 +63,7 @@ from (
 🔴6.C) CONTINENTAL VARIABILITY (1850–2013)
 ---------------------------------------------------*/
 
--- 6.C.1) Yearly stddev per continent (post-1850)
+-- 6.C.1) Yearly stddev per continent (post-1850) 
 
 select country, 
        extract(year from dt) as year, 
@@ -74,6 +74,7 @@ where country in ('Africa', 'Asia', 'Australia', 'Europe', 'North America', 'Sou
 group by country, year
 order by country, year asc;
 
+--NOTE: in this database continents were listed in the country column, therefore the filter on country is actually filtering continents
 
 -- 6.C.2) Average stddev per continent (post-1850)
 
