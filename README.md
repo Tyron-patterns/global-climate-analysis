@@ -9,10 +9,11 @@ This project showcases my **data analysis skills and performances** using a real
 
 ## 🎯 Objectives
 
-- Understand the structure and quality of the historical temperature dataset
 - Clean the data by correcting types, handling null values, and removing duplicates
-- Analyze global and country-level temperature trends over time
-- Detect and interpret variability, outliers, and signs of climate instability
+- Understand the structure and quality of the historical temperature dataset
+- Detect and interpret outliers and best time filters; identified the most reliable time ranges for analysis
+- Analyze global and country-level temperature trends over time and other tasks
+- Investigated standard deviation and variance to assess climate variability and instability over time
 - Present insights visually using interactive dashboards
 
 ---
