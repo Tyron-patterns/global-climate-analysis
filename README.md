@@ -83,7 +83,7 @@ This ensures full reproducibility of the analysis found in the SQL and Power BI 
 
 ---
 
-##⚠️ Disclaimer on SQL Design
+## ⚠️ Disclaimer on SQL Design
 
 While developing this project, my primary goal was to showcase a wide range of SQL querying techniques — including subqueries, joins, window functions, common table expressions (CTEs), and aggregation logic.
 
