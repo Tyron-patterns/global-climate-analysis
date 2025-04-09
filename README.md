@@ -68,11 +68,17 @@ I created this project to:
 
 ---
 
-## 📊 Dataset
+## 📁 Dataset source
 
-The dataset comes from the
-[Kaggle Global Land Temperatures by Country](https://www.kaggle.com/datasets/thedevastator/unraveling-global-climate-change-through-tempera) 
-project by Berkeley Earth (GlobalLandTemperaturesByCountry.csv, pubblic dataset). It includes average monthly land temperatures for countries from the year 1743 onward.
+The dataset used in this project contains historical global temperature records by country, region, and date.
+
+- **Original source**: [Kaggle Global Land Temperatures by Country](https://www.kaggle.com/datasets/thedevastator/unraveling-global-climate-change-through-tempera) 
+- **Dataset title**: Global Land Temperatures by Country
+- **License**: Open data / public domain
+  
+The CSV file used in this repo is a direct copy of the original dataset, cleaned only for encoding and formatting (no rows or values altered).
+
+This ensures full reproducibility of the analysis found in the SQL and Power BI sections.
 
 ---
 
