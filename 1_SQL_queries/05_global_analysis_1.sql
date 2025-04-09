@@ -16,6 +16,9 @@
 	(select round(stddev(averagetemp)::numeric,3) as filtered_std from global_IQR)
 	from global_t
 
+	--NOTE: this verison is not as efficient as the following one because every 'filtered' row runs a separate query.
+	--this version purpose is to showcase querying abilities!
+		
 	🔵5.A.1)--Temperature statistics with IQR filter
 		
 	with filtered as ( -- comparing values using virtual table
@@ -35,6 +38,8 @@
 	unfiltered.*
 	from unfiltered CROSS JOIN filtered
 
+	-- NOTE: The second query is more efficient as it avoids repeated subqueries by using a CTE and a CROSS JOIN. 
+	-- However, both versions are included to demonstrate alternative querying methods and showcase flexibility in SQL logic and syntax.
 
 /*------------------------------------------------------------------------------------------------------------
 🔴5.B) FIND THE HOTTEST AND COLDEST YEARS GLOBALLY. IF NEEDED, USE LIMIT 5 TO RETRIEVE ONLY THE TOP 5 RESULTS
