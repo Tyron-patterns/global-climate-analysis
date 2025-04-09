@@ -68,7 +68,7 @@
 		count(*) as notnull_count, 
 		null_count_before_1850, 
 		null_count_total,
-		round(null_count_before_1950::numeric/count(*)::numeric,5)*100 as percentage_before_1950,
+		round(null_count_before_1850::numeric/count(*)::numeric,5)*100 as percentage_before_1850,
 		round(null_count_total::numeric/count(*)::numeric, 5)*100 as total_percentage,
 		(round(null_count_total::numeric/count(*)::NUMERIC, 5)*100 - 
 		round(null_count_before_1950::numeric/count(*)::numeric,5)*100) as difference_percentages
@@ -131,6 +131,8 @@
 	and averagetemp is not null) as data_2001_2013,
 	from (select count(*) as total from global_t
 			where averagetemp is not null ) as t
+
+	--P.S. could have used a CTE instead for efficiency, but wanted to find out about the results quickly since I was focused on another task
 
  	🔵2.A.6)--some more hard coding to find the number of records per country for every 25-years time frame
 	SELECT 
