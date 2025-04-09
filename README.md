@@ -72,7 +72,7 @@ I created this project to:
 
 The dataset comes from the
 [Kaggle Global Land Temperatures by Country](https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data) 
-project by Berkeley Earth. It includes average monthly land temperatures for countries from the year 1743 onward.
+project by Berkeley Earth (pubblic dataset). It includes average monthly land temperatures for countries from the year 1743 onward.
 
 ---
 
