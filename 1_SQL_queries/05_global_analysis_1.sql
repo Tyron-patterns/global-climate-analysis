@@ -1,7 +1,10 @@
 
 /*------------------------------------------------------------------------------------------------------------
-🔵3.A) COMPARE GLOBAL TEMPERATURE STATISTICS WITH AND WITHOUT IQR OUTLIER FILTERING (USING INLINE SUBQUERIES)
+🔵5.A) COMPARE GLOBAL TEMPERATURE STATISTICS WITH AND WITHOUT IQR OUTLIER FILTERING (USING INLINE SUBQUERIES)
 ------------------------------------------------------------------------------------------------------------*/
+
+	🔵5.A.1)--Temperature statistics without IQR filter
+		
 	select round(min(averagetemp)::numeric,3) as unfiltered_min, 
 	round(max(averagetemp)::numeric,3) as unfiltered_max, 
 	round(avg(averagetemp)::numeric,3) as unfiltered_avg, 
@@ -12,7 +15,9 @@
 	(select round(avg(averagetemp)::numeric,3) as filtered_avg from global_IQR), 
 	(select round(stddev(averagetemp)::numeric,3) as filtered_std from global_IQR)
 	from global_t
-	
+
+	🔵5.A.1)--Temperature statistics with IQR filter
+		
 	with filtered as ( -- comparing values using virtual table
 	select  round(min(averagetemp)::numeric,3) as filtered_min,
 			round(max(averagetemp)::numeric,3) as filtered_max,
@@ -32,10 +37,10 @@
 
 
 /*------------------------------------------------------------------------------------------------------------
-🔴3.B) FIND THE HOTTEST AND COLDEST YEARS GLOBALLY. IF NEEDED, USE LIMIT 5 TO RETRIEVE ONLY THE TOP 5 RESULTS
+🔴5.B) FIND THE HOTTEST AND COLDEST YEARS GLOBALLY. IF NEEDED, USE LIMIT 5 TO RETRIEVE ONLY THE TOP 5 RESULTS
 -------------------------------------------------------------------------------------------------------------*/
 
-	🔵3.B.1) retrieves hottest years globally
+	🔵5.B.1) retrieves hottest years globally
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
 	from global_t
@@ -45,7 +50,7 @@
 	limit 5;
 
 
-	🔵3.B.2) retrieves coldest years globally
+	🔵5.B.2) retrieves coldest years globally
 
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
@@ -58,10 +63,10 @@
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------
-🔴3.C) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
+🔴6.C) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
 
-	🔵3.C.1) Version A: Regression for all years
+	🔵5.C.1) Version A: Regression for all years
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
