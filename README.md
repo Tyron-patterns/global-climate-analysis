@@ -28,7 +28,7 @@ This project showcases my **data analysis skills and performances** using a real
 - [05_global_analysis_1.sql - specific tasks](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/05_global_analysis_1.sql)
 - [05_global_analysis_2.sql - specific_tasks](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/05_global_analysis_2.sql)
 - [06_variance_analysis.sql - analysis of variability through standard deviation](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/06_Variance_analysis.sql)
-- [07_addiotional_code_to_explore_tables](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/07_additional_code_to_export_tables.sql)
+- [07_additional_code_to_explore_tables](https://github.com/Tyron-patterns/global-climate-analysis/blob/main/1_SQL_queries/07_additional_code_to_export_tables.sql)
 
 
 📖 2_Global_temperature_analysis
