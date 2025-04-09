@@ -83,6 +83,16 @@ This ensures full reproducibility of the analysis found in the SQL and Power BI 
 
 ---
 
+##⚠️ Disclaimer on SQL Design
+
+While developing this project, my primary goal was to showcase a wide range of SQL querying techniques — including subqueries, joins, window functions, common table expressions (CTEs), and aggregation logic.
+
+I consistently aimed for readable and logically structured queries, but maximum performance optimization was not always the main priority. In several cases, I kept versions of queries that are less efficient in real-world production settings in order to demonstrate flexibility and problem-solving with SQL.
+
+When a more efficient alternative exists, I’ve noted it in comments and intentionally retained both versions for learning and review purposes.
+
+---
+
 ## 📫 Contact
 
 I'm currently seeking opportunities in data analysis or sustainability analytics.  
