@@ -74,7 +74,7 @@ The dataset used in this project contains historical global temperature records 
 
 - **Original source**: Berkley Earth, Kaggle
 - **Dataset title**: Global Land Temperatures by Country
-- - **Link to download**: [Link to CSV or page](https://www.kaggle.com/datasets/thedevastator/unraveling-global-climate-change-through-tempera)
+- - **Link to download**: [Link to Kaggle page](https://www.kaggle.com/datasets/thedevastator/unraveling-global-climate-change-through-tempera)
 - **License**: Open data / public domain
   
 The CSV file used in this repo is a direct copy of the original dataset, cleaned only for encoding and formatting (no rows or values altered).
