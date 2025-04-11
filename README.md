@@ -84,6 +84,14 @@ This ensures full reproducibility of the analysis found in the SQL and Power BI 
 
 ---
 
+## ✅ Results, Findings and Insights
+
+Results are intentionally kept out of the query sections to maintain clarity and avoid clutter.
+All findings are instead compiled in the accompanying PDF document, which includes detailed commentary.
+Additionally, most insights are visualized in Power BI, with each chart providing a brief explanation of the methodology and takeaway.
+
+---
+
 ## ⚠️ Disclaimer on SQL Design
 
 While developing this project, my primary goal was to showcase a wide range of SQL querying techniques — including subqueries, joins, window functions, common table expressions (CTEs), and aggregation logic.
@@ -91,13 +99,6 @@ While developing this project, my primary goal was to showcase a wide range of S
 I consistently aimed for readable and logically structured queries, but maximum performance optimization was not always the main priority. In several cases, I kept versions of queries that are less efficient in real-world production settings in order to demonstrate flexibility and problem-solving with SQL.
 
 When a more efficient alternative exists, I’ve noted it in comments and intentionally retained both versions for learning and review purposes.
-
----
-##✅Results, Findings and Insights
-
-Results are intentionally kept out of the query sections to maintain clarity and avoid clutter.
-All findings are instead compiled in the accompanying PDF document, which includes detailed commentary.
-Additionally, most insights are visualized in Power BI, with each chart providing a brief explanation of the methodology and takeaway.
 
 ---
 
