@@ -84,7 +84,7 @@ This ensures full reproducibility of the analysis found in the SQL and Power BI 
 
 ---
 
-## ✅ Results, Findings and Insights
+## ✅ Results and Insights
 
 Results are intentionally kept out of the query sections to maintain clarity and avoid clutter.
 All findings are instead compiled in the accompanying PDF document, which includes detailed commentary.
