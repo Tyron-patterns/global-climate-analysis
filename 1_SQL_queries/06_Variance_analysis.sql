@@ -14,8 +14,9 @@
 🔴6.A) GLOBAL STDDEV: FILTERED VS UNFILTERED
 ---------------------------------------------*/
 
--- Compare standard deviation of global average temperature per year
--- With and without outliers
+-- This query compares yearly global standard deviation of temperature with and without extreme outliers.
+--It performs a FULL OUTER JOIN on filtered and unfiltered datasets, and displays a symbol comparing variability shifts over time.
+--This helps understand how outliers impact the volatility of global temperature records.
 
 select a.year, 
        a.filtered_std,
@@ -47,7 +48,9 @@ order by a.year;
 🔴6.B) GLOBAL VARIABILITY TREND (LINEAR SLOPE)
 ---------------------------------------------*/
 
--- Calculates the regression slope of global standard deviation over time
+--This query tracks the linear trend of global temperature variability over time using standard deviation.
+--It groups by year, calculates STDDEV, and applies REGR_SLOPE to measure if variability is increasing.
+--The result indicates whether fluctuations in global temperatures are becoming more pronounced.
 
 select round(regr_slope(global_std_overtime, year)::numeric, 5)
 from (
@@ -63,6 +66,9 @@ from (
 🔴6.C) CONTINENTAL VARIABILITY (1850–2013)
 ---------------------------------------------------*/
 
+--These queries analyze temperature variability per continent after 1850 by computing yearly and average standard deviations.
+--They group data by year and continent (stored in the 'country' column), helping highlight regions with greater climate instability.
+--This also enables comparison across continents on how much temperatures fluctuate yearly.
 -- 6.C.1) Yearly stddev per continent (post-1850) 
 
 select country, 
@@ -97,8 +103,9 @@ order by avg(std_peryear) desc;
 🔴6.D) COUNTRY-LEVEL TEMPERATURE VARIABILITY TREND
 ---------------------------------------------------*/
 
--- Calculates regression slope of temperature stddev over time per country
--- Excludes continent-wide aggregates
+--This query calculates a regression slope for standard deviation over time per country (excluding continents).
+--It groups by year and country, computes yearly STDDEV, and then applies REGR_SLOPE to measure the trend.
+--The output identifies which countries are experiencing the most rapid growth in temperature variability.
 
 select country, 
        round(regr_slope(global_std_overtime, year)::numeric, 5) as variability
