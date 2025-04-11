@@ -5,6 +5,7 @@
 --These two queries calculate summary statistics (min, max, avg, stddev) for both filtered and unfiltered datasets.
 --The first uses inline subqueries to contrast results directly in one SELECT; the second leverages CTEs and CROSS JOIN for efficiency.
 --Together they highlight how IQR filtering affects the global distribution and demonstrate two flexible SQL methods.
+
 	🔵5.A.1)--Temperature statistics without IQR filter
 		
 	select round(min(averagetemp)::numeric,3) as unfiltered_min, 
