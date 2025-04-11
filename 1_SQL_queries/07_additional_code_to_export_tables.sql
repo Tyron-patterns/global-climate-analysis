@@ -12,7 +12,9 @@
 							set of columns for one of the Power BI dashboards.
 							------------------------------------------------------------*/
 
--- Example: Yearly temperature range and average per continent (post-1900)
+--This query compares the temperature increase rate for each country using four datasets: total, post-1975, post-1850, and post-1850 filtered for outliers.
+--It uses CTEs to calculate REGR_SLOPE per country for each time period and joins them into a single result table.
+--This allows a direct comparison of warming trends under different assumptions and data scopes.
 
 with after_1975 as(
 select country, --highest temp increase overtime (in 5 countries)
