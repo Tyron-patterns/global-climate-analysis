@@ -14,7 +14,8 @@
 🔴2.A) CHECK FOR MISSING VALUES (NULLs).
 ----------------------------------*/
 
-	🔵2.A.1) --checks for presence of missing data 
+	🔵2.A.1) --checks for presence of missing values: compares how many null values and non-null values are present in key columns;
+		-- uses COUNT(column) to assess overall completeness.
 
 	select count(*) as total, 
 		count(dt) as dt_notnull,
@@ -23,7 +24,8 @@
 		count(country) as country_notnull
 	from global_t;
 
-	🔵2.A.2) --lists the amount of missing data per country
+	🔵2.A.2) --Identifies where missing temperature data occurs 
+		--by grouping rows by country and year, filtering for NULL temperature fields.
 		
 	select country,    
 		extract(year from dt) as year, 
@@ -41,7 +43,9 @@
 	-- Let's invesigate this further!
 
 
-	🔵2.A.3) --checks for number of country with more than 5% (reasonable threshold) of missing values (nulls) 
+	🔵2.A.3) --This query calculates the percentage of missing values per country and identifies those exceeding a 5% threshold.
+		--It joins a subquery counting nulls with a subquery counting total records per country, then filters with a HAVING clause.
+		--This flags countries with potentially unreliable data that may affect the validity of further analysis.
 
 	SELECT COUNT(*) AS countries_with_high_missing
 	FROM (SELECT total.country,
@@ -61,8 +65,12 @@
 	-- 92 countries out of 243 total. 5% is not a negligible amount and 92 countries is a little under half of the total. 
 	-- The next query investigates the concentration of missing data in early years: the data collection starts in 1943
 	-- and measuring methods where more unrelaible at that time
+		
 
-	🔵2.A.4) --checks for difference in percentage before and after 1850 for missing values (nulls)
+	🔵2.A.4) -- Calculates the number of NULL temperature values before 1850 vs. total per country using two subqueries 
+		-- (null_temps_column_1850 and null_temp_total_column), then joins them on country to compare the results.  
+		-- Computes the percentage of missing values for both timeframes and their difference using ROUND(...::numeric/count(...)...), 
+		-- and finally groups everything by country to summarize the proportion of early missing data.
 
 	select global_t.country, 
 		count(*) as notnull_count, 
@@ -92,8 +100,11 @@
 	-- the difference in percentage between before_1950 and total null values is extremely small, 
 	-- indicating that most missing data are concentrated before 1950 
 	-- confirming the hypothesis that data collection became more consistent/reliable after the mid-20th century
+		
 
-	🔵2.A.5)--some hard coding to retrieve in one row all the percentages for every 25 years time frame
+	🔵2.A.5)--some hard coding to calculate the share of valid (non-null) temperature records for fixed 25-year intervals across the full dataset.
+		--It uses multiple subqueries with EXTRACT(YEAR FROM dt) to filter by period, then divides by the total valid count.
+		--This gives a clear timeline of data availability, showing which historical periods are well-covered vs. underrepresented.
 	select (select count(*) as total from global_t
 	where averagetemp is not null) as total,
 	(select round((count(*)::numeric/t.total)*100,3) from global_t
@@ -132,9 +143,14 @@
 	from (select count(*) as total from global_t
 			where averagetemp is not null ) as t
 
-	--P.S. could have used a CTE instead for efficiency, but wanted to find out about the results quickly since I was focused on another task
+	--P.S. Although a Common Table Expression (CTE) would improve efficiency, 
+	--the hardcoded logic was used intentionally for clarity and to explicitly demonstrate the structure of each time interval.
 
- 	🔵2.A.6)--some more hard coding to find the number of records per country for every 25-years time frame
+		
+ 	🔵2.A.6)--This query counts valid records for each country across predefined 25-year intervals.
+		--It uses conditional aggregation with COUNT(CASE WHEN...) and groups by country to track data consistency over time.
+		--This helps assess whether specific countries have sufficient historical coverage for longitudinal analysis.
+		
 	SELECT 
 	  country,
 	  COUNT(CASE WHEN EXTRACT(YEAR FROM dt) BETWEEN 1743 AND 1775 THEN 1 END) AS count_1743_1775,
@@ -157,21 +173,23 @@
 	
 	select (select count(averagetemp) from global_t where extract(year from dt) > 1850) as after_1850,
 	(select count(averagetemp)from global_t where extract(year from dt) < 1850) as before_1850
+		
 
 /*----------------------------------------------
 🔴2.B) IDENTIFY POTENTIAL DUPLICATE RECORDS.🔷
 ----------------------------------------------*/
 
---checks for repeated values (identical temperatures for the same country on the same date)
+	--This query detects duplicate temperature readings for the same country and date with identical values.
+	--It groups by country, dt, averagetemp and filters identical combinations of these 3 values with HAVING COUNT(*) > 1.
+	--This ensures data integrity by flagging and potentially removing redundancies that could skew results.
 
 	select country, 
 			dt, 
-			averagetemp, 
-			averagetempuncertainty, 	
+			averagetemp, 	
 			count(*) 
 	from global_t
 	where averagetemp is not null 
-	group by country, dt,averagetemp, averagetempuncertainty 
+	group by country, dt,averagetemp
 	having count(*) > 1
 	order by country, dt;
 
