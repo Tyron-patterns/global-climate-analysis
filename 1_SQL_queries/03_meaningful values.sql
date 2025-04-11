@@ -14,7 +14,9 @@
 🔴3.A) CHECK FOR MEANINGFUL VALUES
 ----------------------------------*/
 
-	🔵3.A.1) retrieves important values on a global level
+	🔵3.A.1) --This query calculates global summary statistics: min, max, average, and standard deviation for both average temperature and its uncertainty.
+		--It uses aggregate functions (MIN, MAX, AVG, STDDEV) across the full dataset to provide a baseline of global values.
+		--These metrics serve as a reference point to identify the distribution and outliers or comparing trends across countries or timeframes.
 
 	select min(averagetemp) as min, 
 			round(max(averagetemp)::numeric, 3) as max,--checks for important values 
@@ -26,7 +28,9 @@
 	from global_t;
 
 	
-	🔵3.A.2) retrieves average of important values on a country level
+	🔵3.A.2) --This query computes the average of each country’s min, max, mean, and standard deviation in a nested subquery.
+		--The inner query calculates individual stats per country, which are then averaged in the outer query to give a meta-summary.
+		--This provides insight into the typical variability and range of temperatures across countries, independent of global extremes.
 
 	select round(avg(min_temp)::numeric,3) as avg_min, -- average important values on a country level
 			round(avg(max_temp)::numeric,3) as avg_max, 
@@ -42,7 +46,7 @@
 	order by country);
 
 
-	🔵3.A.i) checks the magnitud of uncertainties related to each measures
+	🔵3.A.i) --This query counts how many records have temperature uncertainty greater than the absolute value of the measured temperature.
 
 	select count(*) 
 	from global_t 
