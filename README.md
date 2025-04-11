@@ -93,6 +93,13 @@ I consistently aimed for readable and logically structured queries, but maximum 
 When a more efficient alternative exists, I’ve noted it in comments and intentionally retained both versions for learning and review purposes.
 
 ---
+##✅Results, Findings and Insights
+
+Results are intentionally kept out of the query sections to maintain clarity and avoid clutter.
+All findings are instead compiled in the accompanying PDF document, which includes detailed commentary.
+Additionally, most insights are visualized in Power BI, with each chart providing a brief explanation of the methodology and takeaway.
+
+---
 
 ## 📫 Contact
 
