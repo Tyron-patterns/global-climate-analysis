@@ -2,7 +2,9 @@
 /*------------------------------------------------------------------------------------------------------------
 🔵5.A) COMPARE GLOBAL TEMPERATURE STATISTICS WITH AND WITHOUT IQR OUTLIER FILTERING (USING INLINE SUBQUERIES)
 ------------------------------------------------------------------------------------------------------------*/
-
+--These two queries calculate summary statistics (min, max, avg, stddev) for both filtered and unfiltered datasets.
+--The first uses inline subqueries to contrast results directly in one SELECT; the second leverages CTEs and CROSS JOIN for efficiency.
+--Together they highlight how IQR filtering affects the global distribution and demonstrate two flexible SQL methods.
 	🔵5.A.1)--Temperature statistics without IQR filter
 		
 	select round(min(averagetemp)::numeric,3) as unfiltered_min, 
@@ -45,7 +47,12 @@
 🔴5.B) FIND THE HOTTEST AND COLDEST YEARS GLOBALLY. IF NEEDED, USE LIMIT 5 TO RETRIEVE ONLY THE TOP 5 RESULTS
 -------------------------------------------------------------------------------------------------------------*/
 
-	🔵5.B.1) retrieves hottest years globally
+--These queries group temperature data by year and calculate the average to rank the hottest and coldest years.
+--They use ORDER BY on the average temperature and LIMIT 5 to return the top extremes.
+--This gives a clear overview of historic temperature peaks and troughs globally.
+
+	🔵5.B.1) --retrieves coldest years globally
+		
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
 	from global_t
@@ -55,7 +62,7 @@
 	limit 5;
 
 
-	🔵5.B.2) retrieves coldest years globally
+	🔵5.B.2)--retrieves coldest years globally
 
 	select extract(year from dt) as year, 
 			avg(averagetemp) as avg_temp 
@@ -68,8 +75,12 @@
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------
-🔴6.C) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
+🔴5.C) CALCULATE AND RANK THE AVERAGE TEMPERATURE CHANGE FOR EACH COUNTRY OVER TIME. HIGHLIGHT THE TOP 15 FASTEST-WARMING COUNTRIES AND RETRIEVE THE FULL DATASET IF NEEDED
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+--These queries calculate the slope of temperature change over time using REGR_SLOPE across years per country.
+--Version A includes all years; Version B filters for post-1900 to reflect modern warming trends more accurately.
+--They help identify the fastest-warming countries and can be adjusted to retrieve top N results or the single highest.
 
 	🔵5.C.1) Version A: Regression for all years
 
@@ -98,7 +109,7 @@
 	limit 1;
 
 
-	🔵3.C.2)Version B: Regression post-1900 (used in main analysis)
+	🔵3.C.2)--Version B: Regression post-1900 (used in main analysis)
 
 	select country, 
 			round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -115,8 +126,13 @@
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------
-🔴3.D) Identify the country with the highest temperature increase. Optionally, filter for the last century (year > 1900)
+🔴5.D) Identify the country with the highest temperature increase. Optionally, filter for the last century (year > 1900)
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+--This query isolates the country with the steepest warming trend since 1900 using linear regression.
+--It groups average temperature by year, runs REGR_SLOPE, and sorts by the slope to find the top result.
+--Useful for spotlighting climate hotspots and contextualizing national-level climate change impacts.
+
 
 select country, --highest temp increase overtime in 1900
 round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
