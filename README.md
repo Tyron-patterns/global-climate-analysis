@@ -1,4 +1,4 @@
-# global_climate-analysis
+# global_climate_analysis
 Full data analysis project on global temperature trends using SQL and Power BI.
 
 # 🌍 Global Climate Trends Analysis
