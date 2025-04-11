@@ -2,6 +2,10 @@
 🔴5.E) ANALYZE THE GLOBAL TEMPERATURE TREND OVER TIME. IF THE DATASET INCLUDED CONTINENTS, THE SAME METHOD COULD BE USED FOR CONTINENT-BASED TRENDS
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
 
+--These queries use REGR_SLOPE to measure temperature increase per year, both globally and by continent.
+--They compare trends across four key periods (from 1743, 1850, 1900, and 1950 onward) and use CTEs for clarity and comparison.
+--The final query performs the same trend analysis grouped by continent, helping explore regional climate dynamics.
+
 	🔵5.E.1) --retrieves the regression slope per country per year 
 
 	select round(regr_slope(avg_temp_per_year, year)::numeric,5) as temp_increase 
@@ -73,6 +77,11 @@
 /*-------------------------------------------------------------
 🔴5.F) WHICH COUNTRIES HAVE THE MOST MISSING TEMPERATURE DATA?
 -------------------------------------------------------------*/
+
+--The first query counts null temperature records per country. 
+--The second estimates missing records by comparing each country’s record count to Germany’s (the highest).
+--These approaches help identify data availability gaps and assess overall dataset quality by region.
+
 	🔵5.F.1) --counting missing values (‘null’)
 	select country, count(country) from global_t 
 	where averagetemp is null
@@ -97,7 +106,11 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------------
 🔴5.G) WHAT IS THE AVERAGE TEMPERATURE TREND IN EUROPE (NO CONTINENT COLUMNS WAS PROVIDED IN THE TABLE AND EUROPE WAS LISTED AS A COUNTRY) AND 5 COUNTRIES IN EUROPE OVER THE LAST 50 YEARS?
 ---------------------------------------------------------------------------------------------------------------------------------------------*/
-	
+
+--These queries analyze warming trends for 'Europe' (listed as a country) and five European nations.
+--They apply REGR_SLOPE to temperature averages per year from 1975 onward, helping assess recent regional warming.
+--Another query lists all country names for validation or manual grouping by region.
+
 	🔵5.G.1)-- retrieves for regression slope of countries per year
 
 	select country, 
