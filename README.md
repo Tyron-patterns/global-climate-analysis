@@ -1,6 +1,3 @@
-# global_climate_analysis
-Full data analysis project on global temperature trends using SQL and Power BI.
-
 # 🌍 Global Climate Trends Analysis
 
 This project showcases my **data analysis skills and performances** using a real-world climate dataset. I explored, cleaned, and analyzed over 250 years of global temperature data using **SQL** and visualized key findings in **Power BI**. This analysis is part of my portfolio to demonstrate the technical and analytical abilities required for a junior data analyst role.
